@@ -8,6 +8,10 @@ cat /dev/urandom | od | sed "s/\(.\)/\1 /g" | java MatMulASCII
 ./toBinary <<< "79 107 44 32 72 101 108 108 111 10"
 
 # Subtask 2A
+
+# Current dir in a string (used for running .mat files from other directories)
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+
 case $# in
     2)
         echo "2 Arguments"
@@ -23,9 +27,18 @@ case $# in
         then
             echo "Numbers as arguments and files exist in current directory"
             cat A$1.mat B$2.mat | java MatMulASCII
-        elif [[ $1 == */* ]] && [[ $2 == */* ]]
+        elif [[ $1 == */*A*.mat ]] && [[ $2 == */*B*.mat ]]
         then
-            echo "Files in different directory and they exist"
+            arg1="${DIR}/${1}"
+            arg2="${DIR}/${2}"
+            echo "A*.mat first arg, B*.mat second arg, files in different directory and they exist"
+            cat $arg1 $arg2 | java MatMulASCII
+        elif [[ $1 == */*B*.mat ]] && [[ $2 == */*A*.mat ]]
+        then
+            arg1="${DIR}/${1}"
+            arg2="${DIR}/${2}"
+            echo "B*.mat first arg, A*.mat second arg, files in different directory and they exist"
+            cat $arg2 $arg1 | java MatMulASCII
         fi
         ;;
     0)
