@@ -17,39 +17,40 @@ arg1="${DIR}/${1}"
 arg2="${DIR}/${2}"
 
 # Timing start counter
-let start=$(($(date +%s%N)/1000000))
+
+
+function error(){
+        echo "Use 0 arguments to loop trough all the valid Matrix Multiplications in the current directory."
+        echo "Use 2 .mat files as arguments, one A*.mat and one B*.mat (where * is a number), like theese ones:"
+        ls *.mat
+}
 
 case $# in
     2)
-        echo "2 Arguments"
-        if [[ $1 == A*.mat ]] && [[ $2 == B*.mat ]] && [ -f $arg1 ] && [ -f $arg2 ]
+        if [[ $arg1 == */*A*.mat ]] && [[ $arg2 == */*B*.mat ]] && [ -f $arg1 ] && [ -f $arg2 ] # A*.mat file first arg, B*.mat file second arg, and they both exist
         then
-            echo "A*.mat first arg, B*.mat second arg, and both exist in current directory"
-            cat $* | java MatMulASCII
-             cat $arg1 $arg2 | java MatMulASCII
-        elif [[ $1 == B*.mat ]] && [[ $2 == A*.mat ]] && [ -f $arg1 ] && [ -f $arg2 ]
-        then
-            echo "B*.mat first arg, A*.mat second arg, and both exist in current directory"
-            cat $2 $1 | java MatMulASCII
-        elif [[ $1 =~ [0-9] ]] && [[ $2 =~ [0-9] ]] && [ -f A$1.mat ] && [ -f B$2.mat ]
-        then
-            echo "Numbers as arguments and files exist in current directory"
-            cat A$1.mat B$2.mat | java MatMulASCII
-        elif [[ $arg1 == */*A*.mat ]] && [[ $arg2 == */*B*.mat ]] && [ -f $arg1 ] && [ -f $arg2 ]
-        then
-            echo "A*.mat first arg, B*.mat second arg, at least one file in different directory and they both exist"
+            let start=$(($(date +%s%N)/1000000))
             cat $arg1 $arg2 | java MatMulASCII
-        elif [[ $arg1 == */*B*.mat ]] && [[ $arg2 == */*A*.mat ]] && [ -f $arg1 ] && [ -f $arg2 ]
+            let end=$(($(date +%s%N)/1000000))
+        elif [[ $arg1 == */*B*.mat ]] && [[ $arg2 == */*A*.mat ]] && [ -f $arg1 ] && [ -f $arg2 ] # B*.mat file first arg, A*.mat file second arg, and they both exist
         then
-            echo "B*.mat first arg, A*.mat second arg, at least one file in different directory and they both exist"
+            let start=$(($(date +%s%N)/1000000))
             cat $arg2 $arg1 | java MatMulASCII
+            let end=$(($(date +%s%N)/1000000))
+        elif [[ $1 =~ [0-9] ]] && [[ $2 =~ [0-9] ]] && [ -f A$1.mat ] && [ -f B$2.mat ] # Numbers as arguments and files exist in current directory
+        then
+            let start=$(($(date +%s%N)/1000000))
+            cat A$1.mat B$2.mat | java MatMulASCII 
+            let end=$(($(date +%s%N)/1000000))
         else
-            echo "Error $arg1 or $arg2 is not valid file paths"
-            echo "Valid files from this directory:"
-            ls *.mat
-            echo "Use one A and one B file as arguments..."
-            echo "Also works with files from different directories, like otherdir/A7.mat or ../B3.mat"
-            echo "You can even use numbers as arguments where the first number is the A file and the second number is the B file, both from this directory..."
+            echo "Invalid argument, $1 or $2 "
+            error
+        fi
+
+        let timing=end-start
+        if [[ $timing -gt 0 ]]
+        then
+            echo "Time to complete the matrix multiplication of $1 and $2 was $timing ms"
         fi
         ;;
     0)
@@ -57,7 +58,8 @@ case $# in
 
         ls *.mat # Prints every .mat file in the current directory
         set -- *.mat # Sets every .mat file as an entry in the arguments
-        
+        let totalTime=0
+
         for arg1 in $@ # Nested for loops to get every combination
         do
             for arg2 in $@
@@ -65,22 +67,22 @@ case $# in
                 if [[ $arg1 == A* ]] && [[ $arg2 == B* ]] # Select every valid combination for matrix multiplication
                 then
                     echo $arg1 $arg2
+                    let start=$(($(date +%s%N)/1000000))
                     cat $arg1 $arg2 | java MatMulASCII
+                    let end=$(($(date +%s%N)/1000000))
+                    let timing=end-star
+                    totalTime=$(($totaltime+$timing))
                 fi
             done
         done
+
+        if [[ $totalTime -gt 0 ]]
+        then
+            echo "Time to complete all matrix multiplications from current dir is $totalTime ms"
+        fi
         ;;
     *)
-        echo "ERROR: not 2 or 0 arguments"
-        echo "Use 0 arguments to loop trough all the valid Matrix Multiplications in the current directory."
-        echo "Use 2 .mat files as arguments, one A?.mat and one B?.mat (where ? is a number), like theese ones:"
-        ls A*.mat
-        echo "and"
-        ls B*.mat
-        echo "You can also use files from different directories by using .. , /otherdir/ and so on..."
+        echo "ERROR 1: not 2 or 0 arguments"
+        error
         ;;
 esac
-
-let end=$(($(date +%s%N)/1000000))
-let timing=end-start
-echo "Time to complete: $timing ms"
