@@ -10,7 +10,7 @@ function run(){ # Function to run the java program, with a timer
         cat $arg1 $arg2 | java MatMulASCII
         let end=$(($(date +%s%N)/1000000)) # End time
         let timing=end-start # Delta time 
-        echo "Time to complete the matrix multiplication of $arg1 and $arg2 was $timing ms"
+        echo "Time to complete the matrix multiplication was $timing ms"
     fi
 }
 function error(){ # Error 
