@@ -23,10 +23,10 @@ case $# in # Check number of arguments
         DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd) # Current dir
         arg1=${DIR}/${1} # Adding the file exstention to the arguments
         arg2=${DIR}/${2}
-        if [[ $arg1 == */*A*.mat ]] && [[ $arg2 == */*B*.mat ]] # A*.mat file first arg, B*.mat file second arg, and they both exist
+        if [[ $arg1 == *A*.mat ]] && [[ $arg2 == *B*.mat ]] # A*.mat file first arg, B*.mat file second arg, and they both exist
         then
             run
-        elif [[ $arg1 == */*B*.mat ]] && [[ $arg2 == */*A*.mat ]] # B*.mat file first arg, A*.mat file second arg, and they both exist
+        elif [[ $arg1 == *B*.mat ]] && [[ $arg2 == *A*.mat ]] # B*.mat file first arg, A*.mat file second arg, and they both exist
         then
             arg1=$arg2
             arg2=${DIR}/${1}
