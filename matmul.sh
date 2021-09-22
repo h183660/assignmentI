@@ -4,7 +4,7 @@ javac MatMulASCII.java
 gcc -o toBinary toBinary.c
 # Subtask 2 Execution and data input
 function run(){ # Function to run the java program, with a timer
-    if [ -f $arg1 ] && [ -f $arg2 ]
+    if [ -f $arg1 ] && [ -f $arg2 ] # Does the arguments exist as files?
     then
         let start=$(($(date +%s%N)/1000000)) # Saves the start time in ms
         cat $arg1 $arg2 | java MatMulASCII
@@ -31,7 +31,7 @@ case $# in # Check number of arguments
             arg1=$arg2
             arg2=${DIR}/${1}
             run
-        elif [[ $1 =~ [0-9] ]] && [[ $2 =~ [0-9] ]] # Numbers as arguments and files exist in current directory
+        elif [[ $1 =~ [0-9] ]] && [[ $2 =~ [0-9] ]] # Numbers as arguments
         then
             arg1=A$1.mat
             arg2=B$2.mat
