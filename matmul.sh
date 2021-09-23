@@ -4,18 +4,15 @@ javac MatMulASCII.java
 gcc -o toBinary toBinary.c
 # Subtask 2 Execution and data input
 function run(){ # Function to run the java program, with a timer
-    if [ -f $arg1 ] && [ -f $arg2 ] # Does the arguments exist as files?
-    then
         let start=$(($(date +%s%N)/1000000)) # Saves the start time in ms
         cat $arg1 $arg2 | java MatMulASCII
         let end=$(($(date +%s%N)/1000000)) # End time
         let timing=end-start # Delta time 
         echo "Time to complete the matrix multiplication was $timing ms"
-    fi
 }
-function error(){ # Error 
+function error(){ # Error message
     echo "Use 0 arguments to loop trough all the valid Matrix Multiplications in the current directory."
-    echo "Use 2 .mat files as arguments, one A*.mat and one B*.mat (where * is a number), like theese ones from current dir:"
+    echo "Use 2 .mat files as arguments, one A*.mat and one B*.mat (where * is a number), like these ones from the current dir:"
     ls *.mat
 }
 case $# in # Check number of arguments
@@ -23,22 +20,31 @@ case $# in # Check number of arguments
         DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd) # Current dir
         arg1=${DIR}/${1} # Adding the file exstention to the arguments
         arg2=${DIR}/${2}
-        if [[ $arg1 == *A*.mat ]] && [[ $arg2 == *B*.mat ]] # A*.mat file first arg, B*.mat file second arg, and they both exist
+        if [[ $arg1 == *A*.mat ]] && [[ $arg2 == *B*.mat ]]
         then
-            run
-        elif [[ $arg1 == *B*.mat ]] && [[ $arg2 == *A*.mat ]] # B*.mat file first arg, A*.mat file second arg, and they both exist
+            echo "*A*.mat file first arg, *B*.mat file second arg"
+        elif [[ $arg1 == *B*.mat ]] && [[ $arg2 == *A*.mat ]]
         then
+            echo "*B*.mat file first arg, *A*.mat file second arg"
             arg1=$arg2
             arg2=${DIR}/${1}
-            run
-        elif [[ $1 =~ [0-9] ]] && [[ $2 =~ [0-9] ]] # Numbers as arguments
+        elif [[ $1 = [0-9] ]] && [[ $2 = [0-9] ]]
         then
+            echo "Numbers as arguments"
             arg1=A$1.mat
             arg2=B$2.mat
+        else
+            echo "Error 3: Both arguments $1 and $2 need to be .mat files, one A*.mat file and one B*.mat file, the numbers also work as arguments"
+            error
+            exit 3
+        fi
+        if [ -f $arg1 ] && [ -f $arg2 ] # Does the arguments exist as files?
+        then
             run
         else
-            echo "Error 2: At least one invalid argument, $1 or $2 "
+            echo "Error 2: Both $1 and $2 have to exist as one A and one B .mat file"
             error
+            exit 2
         fi
         ;;
     0)
@@ -65,5 +71,6 @@ case $# in # Check number of arguments
     *)
         echo "ERROR 1: not 2 or 0 arguments"
         error
+        exit 1
         ;;
 esac
