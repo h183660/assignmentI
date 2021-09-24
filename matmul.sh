@@ -6,8 +6,7 @@ gcc -o toBinary toBinary.c
 function run(){ # Function to run the java program, with a timer
         let start=$(($(date +%s%N)/1000000)) # Saves the start time in ms
         cat $arg1 $arg2 | java MatMulASCII
-        let end=$(($(date +%s%N)/1000000)) # End time
-        let timing=end-start # Delta time 
+        let timing=$(($(date +%s%N)/1000000))-start # Delta time 
         echo "Time to complete the matrix multiplication was $timing ms"
 }
 function error(){ # Error message
@@ -20,16 +19,13 @@ case $# in # Check number of arguments
         DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd) # Current dir
         arg1=${DIR}/${1} # Adding the file exstention to the arguments
         arg2=${DIR}/${2}
-        if [[ $arg1 == *A*.mat ]] && [[ $arg2 == *B*.mat ]]
-        then
+        if [[ $arg1 == *A*.mat ]] && [[ $arg2 == *B*.mat ]]; then
             echo "*A*.mat file first arg, *B*.mat file second arg"
-        elif [[ $arg1 == *B*.mat ]] && [[ $arg2 == *A*.mat ]]
-        then
+        elif [[ $arg1 == *B*.mat ]] && [[ $arg2 == *A*.mat ]]; then
             echo "*B*.mat file first arg, *A*.mat file second arg"
             arg1=$arg2
             arg2=${DIR}/${1}
-        elif [[ $1 = [0-9] ]] && [[ $2 = [0-9] ]]
-        then
+        elif [[ $1 = [0-9] ]] && [[ $2 = [0-9] ]]; then
             echo "Numbers as arguments"
             arg1=A$1.mat
             arg2=B$2.mat
@@ -38,8 +34,7 @@ case $# in # Check number of arguments
             error
             exit 3
         fi
-        if [ -f $arg1 ] && [ -f $arg2 ] # Does the arguments exist as files?
-        then
+        if [ -f $arg1 ] && [ -f $arg2 ]; then # Does the arguments exist as files?
             run
         else
             echo "Error 2: Both $1 and $2 have to exist as one A and one B .mat file"
@@ -55,16 +50,14 @@ case $# in # Check number of arguments
         do
             for arg2 in $@
             do
-                if [[ $arg1 == A* ]] && [[ $arg2 == B* ]] # Select every valid combination for matrix multiplication
-                then
+                if [[ $arg1 == A* ]] && [[ $arg2 == B* ]]; then # Select every valid combination for matrix multiplication
                     echo "Multiplying $arg1 by $arg2"
                     run
                     totalTime=$((totalTime+$timing))
                 fi
             done
         done
-        if [[ $totalTime -gt 0 ]] # Prints the time if it is greater than 0
-        then
+        if [[ $totalTime -gt 0 ]]; then # Prints the time if it is greater than 0
             echo "Time to complete all matrix multiplications from current dir is $totalTime ms"
         fi
         ;;
