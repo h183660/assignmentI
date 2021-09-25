@@ -25,7 +25,7 @@ case $# in # Check number of arguments
             echo "*B*.mat file first arg, *A*.mat file second arg"
             arg1=$arg2
             arg2=${DIR}/${1}
-        elif [[ $1 = [0-9] ]] && [[ $2 = [0-9] ]]; then
+        elif [[ $1 -eq $1 ]] && [[ $2 -eq $2 ]]; then
             echo "Numbers as arguments"
             arg1=A$1.mat
             arg2=B$2.mat
