@@ -8,14 +8,17 @@ public class MatMulBinary {
 	public static final int l = 300, n = 50, m = 500;
 
 	// Reads out a matrix of prespecified dimension.
-	public static int[][] importMatrix(Scanner sc, int height, int width) throws Exception {
+	public static int[][] importMatrix(DataInputStream input, int height, int width) throws Exception {
 		int A[][] = new int[height][width];
 		for (int i = 0; i < height; ++i) {
 			for (int j = 0; j < width; ++j) {
 
+				/*
 				if (sc.hasNextInt()) {
 					A[i][j] = sc.nextInt();
-
+				*/
+				if(input.available() > 0) {
+					A[i][j] = input.readInt();
 				} else {
 					throw new Exception("Not enough numbers in matrix input.");
 				}
@@ -42,10 +45,15 @@ public class MatMulBinary {
 	public static void main(String[] args) throws Exception {
 		int A[][], B[][];
 
-		Scanner input = new Scanner(System.in);
-
+		// Scanner input = new Scanner(System.in);
+		
+		DataInputStream input = new DataInputStream(System.in);
+		
 		A = importMatrix(input, l, n);
 		B = importMatrix(input, n, m);
+		
+		input.close();
+		
 		int C[][] = new int[l][m];
 		for (int i = 0; i < l; ++i) {
 			for (int j = 0; j < m; ++j) {
