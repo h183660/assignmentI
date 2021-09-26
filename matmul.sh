@@ -17,16 +17,13 @@ function error(){ # Error message
 }
 case $# in # Check number of arguments
     2)
-        if [[ $1 == *A*.mat ]] && [[ $2 == *B*.mat ]]; then
-            echo "*A*.mat file first arg, *B*.mat file second arg"
+        if [[ $1 == *A*.mat ]] && [[ $2 == *B*.mat ]]; then # A*.mat file first arg, B*.mat file second arg
             arg1=$1 # Adding the file exstention to the arguments
             arg2=$2
-        elif [[ $1 == *B*.mat ]] && [[ $2 == *A*.mat ]]; then
-            echo "*B*.mat file first arg, *A*.mat file second arg"
+        elif [[ $1 == *B*.mat ]] && [[ $2 == *A*.mat ]]; then # B*.mat file first arg, A*.mat file second arg
             arg1=$2
             arg2=$1
-        elif [[ $1 -ge 0 ]] && [[ $2 -ge 0 ]]; then
-            echo "Numbers as arguments"
+        elif [[ $1 -ge 0 ]] && [[ $2 -ge 0 ]]; then # Numbers as arguments
             arg1=A$1.mat
             arg2=B$2.mat
         else
