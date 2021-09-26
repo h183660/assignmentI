@@ -18,7 +18,7 @@ import java.io.DataInput;
 import java.io.DataInputStream;
 import java.util.Arrays;
 
-public class MatMulASCII {
+public class MatMulBinary {
   public static final int l = 300, n = 50, m = 500;
   
   // Reads out a matrix of prespecified dimension.
