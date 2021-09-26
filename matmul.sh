@@ -1,7 +1,7 @@
 #! /bin/bash
 # Subtask 1 Automatise compilation
 javac MatMulASCII.java
-gcc -o toBinary toBinary.c
+gcc -o toBinary toBinary.c #2
 # Subtask 2 Execution and data input
 function run(){ # Function to run the java program, with a timer
         let start=$(($(date +%s%N)/1000000)) # Saves the start time in ms
