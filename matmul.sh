@@ -1,17 +1,11 @@
 #! /bin/bash
 # Subtask 1 Automatise compilation
 javac MatMulASCII.java
-javac MatMulBinary.java
 gcc -o toBinary toBinary.c
 # Subtask 2 Execution and data input
 function run(){ # Function to run the java program, with a timer
         let start=$(($(date +%s%N)/1000000)) # Saves the start time in ms
-        
         cat $1 $2 | java MatMulASCII
-        
-        # Subtask 3
-        ./toBinary <<< $(cat "$1" "$2") | java MatMulBinary
-        
         let timing=$(($(date +%s%N)/1000000))-start # Delta time 
         echo "Time to complete the matrix multiplication was $timing ms"
 }
